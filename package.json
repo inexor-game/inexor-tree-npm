@@ -1,0 +1,26 @@
+{
+  "name": "inexor-tree",
+  "version": "0.9.0",
+  "description": "The inexor tree library on NPM",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inexor-game/inexor-tree-npm.git"
+  },
+  "maintainer": "Lennard Berger <fohlen@darkkeepers.dk>",
+  "license": "Zlib",
+  "bugs": {
+    "url": "https://github.com/inexor-game/inexor-tree-npm/issues"
+  },
+  "homepage": "https://github.com/inexor-game/inexor-tree-npm",
+  "dependencies": {
+    "grpc": "^0.15.0",
+    "protobufjs": "^5.0.1"
+  },
+    "engines": {
+    "node": ">= 4.4.4"
+  }
+}

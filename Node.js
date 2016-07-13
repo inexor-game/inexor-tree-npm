@@ -1,5 +1,5 @@
-var EventEmitter = require("events");
-const util = require("./util");
+var EventEmitter = require('events');
+const util = require('./util');
 
 /**
  * Represents a tree Node
@@ -77,7 +77,7 @@ class Node extends EventEmitter {
         if (util.isValidDataType(datatype)) {
             this._datatype = datatype;
         } else {
-            throw "Invalid data type";
+            throw 'Invalid data type';
         }
         
         /**
@@ -126,7 +126,7 @@ class Node extends EventEmitter {
          */
         
         // Check the node type (either node or a data item)
-        if (datatype == "node") {
+        if (datatype == 'node') {
             this.isContainer = true;
             this.isLeaf = false;
             // Initializes the map of child nodes.
@@ -140,7 +140,7 @@ class Node extends EventEmitter {
             if (initialValue != null) {
                 this._value = initialValue;
             } else {
-                throw "No initial value provided";
+                throw 'No initial value provided';
             }
 
             // Sets if the tree node should be synchronized.
@@ -179,7 +179,7 @@ class Node extends EventEmitter {
         if (this.isLeaf && !this._readOnly) {
             let oldValue = this._value;
 
-            this.emit("preSet", {oldValue: oldValue, newValue: value});
+            this.emit('preSet', {oldValue: oldValue, newValue: value});
                         
             // Update the value
             this._value = value;
@@ -187,7 +187,7 @@ class Node extends EventEmitter {
             // Set the timestamp when the value was last changed
             this._timestamp = Date.now();
             
-            this.emit("postSet", {oldValue: oldValue, newValue: value}); 
+            this.emit('postSet', {oldValue: oldValue, newValue: value}); 
             // Does this even make sense?
             // Why not spread the time stamp
 
@@ -196,9 +196,9 @@ class Node extends EventEmitter {
                 try {
                     let message = {};
                     message[this._protoKey] = value;
-                    // console.log(this._protoKey + " = " + value);
+                    // console.log(this._protoKey + ' = ' + value);
                     this.getRoot().grpc.synchronize.write(message);
-                    this.emit("postSync", {oldValue: oldValue, newValue: value});
+                    this.emit('postSync', {oldValue: oldValue, newValue: value});
                 } catch(err) {
                     // TODO: Add error handling
                 	console.log(err);
@@ -289,7 +289,7 @@ class Node extends EventEmitter {
             
             return childNode;
         } else {
-            throw "Failed to create child node";
+            throw 'Failed to create child node';
         }
     }
     
@@ -299,7 +299,7 @@ class Node extends EventEmitter {
      * @alias Node.addChild
      */
     addNode(name) {
-        return this.addChild(name, "node");
+        return this.addChild(name, 'node');
     }
     
     /**

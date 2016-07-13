@@ -1,6 +1,6 @@
 {
   "name": "inexor-tree",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "The inexor tree library on NPM",
   "main": "index.js",
   "scripts": {

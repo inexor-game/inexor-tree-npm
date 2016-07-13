@@ -1,6 +1,6 @@
 const grpc = require('grpc');
-const util = require("./util");
-const Node = require("./Node");
+const util = require('./util');
+const Node = require('./Node');
 
 /**
  * Represents the inexor root tree
@@ -13,7 +13,7 @@ class Root extends Node {
      */
     constructor() {
         // Initialise this as the root node
-        super(null, "", "node");
+        super(null, '', 'node');
     }
     
     /**
@@ -48,7 +48,7 @@ class Root extends Node {
         var node = this;
         for (let i = 1; i < splittedPath.length - 1; i++) {
             if (!node.hasChild(splittedPath[i])) {
-                node = node.addChild(splittedPath[i], "node");
+                node = node.addChild(splittedPath[i], 'node');
             } else {
                 node = node.getChild(splittedPath[i]);
             }
@@ -108,17 +108,17 @@ class Root extends Node {
  * @param grpc
  * @returns {Root}
  */
-function createTree(server, grpc) {
+function createTree(server) {
     let root = new Root();
     
     root.grpc = {};
     
     // Load the proto definition
-    root.grpc.protoDescriptor = grpc.load(__dirname + "/../../../inexor/rpc/treedata.gen.proto");
+    root.grpc.protoDescriptor = grpc.load(__dirname + '/../../../inexor/rpc/treedata.gen.proto');
 
     // Returns the path of the field by proto key.
     root.grpc.getPath = function(protoKey) {
-        return root.grpc.protoDescriptor.inexor.tree.TreeService.service.children[0].resolvedRequestType._fieldsByName[protoKey].options["(path)"];
+        return root.grpc.protoDescriptor.inexor.tree.TreeService.service.children[0].resolvedRequestType._fieldsByName[protoKey].options['(path)'];
     };
 
     // Returns the datatype of the field by proto key.
@@ -145,18 +145,18 @@ function createTree(server, grpc) {
     // Connects the the server and initializes the tree.
     root.grpc.connect = function() {
         // Connect to the gRPC client
-        root.grpc.treeServiceClient = new root.grpc.protoDescriptor.inexor.tree.TreeService("localhost:50051", grpc.credentials.createInsecure());
+        root.grpc.treeServiceClient = new root.grpc.protoDescriptor.inexor.tree.TreeService('localhost:50051', grpc.credentials.createInsecure());
 
         root.grpc.synchronize = root.grpc.treeServiceClient.synchronize();
 
-        root.grpc.synchronize.on("data", function(message) {
+        root.grpc.synchronize.on('data', function(message) {
         	try {
                 let protoKey = message.key;
                 let value = message[protoKey];
                 let path = root.grpc.getPath(protoKey);
                 let node = root.findNode(path);
-                if (protoKey != "__numargs") {
-                    server.log.debug("protoKey = " + protoKey + " path = \"" + path + "\" value = " + value);
+                if (protoKey != '__numargs') {
+                    server.log.debug('protoKey = ' + protoKey + ' path = \'' + path + '\' value = ' + value);
                 }
                 // Use setter and prevent sync!
                 node.set(value, true);
@@ -165,16 +165,16 @@ function createTree(server, grpc) {
         	}
         });
 
-        root.grpc.synchronize.on("end", function() {
+        root.grpc.synchronize.on('end', function() {
             // The server has finished sending
-            server.log.debug("inexor.tree.grpc.synchronize.end");
+            server.log.debug('inexor.tree.grpc.synchronize.end');
             // TODO: here we could stop the Inexor Flex because Inexor Core is gone!
             process.exit();
         });
 
-        root.grpc.synchronize.on("status", function(status) {
+        root.grpc.synchronize.on('status', function(status) {
             // process status
-            server.log.debug("inexor.tree.grpc.synchronize.status: " + status);
+            server.log.debug('inexor.tree.grpc.synchronize.status: ' + status);
         });
         
         root.grpc.initializeTree();

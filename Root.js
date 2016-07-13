@@ -1,5 +1,6 @@
+const grpc = require('grpc');
 const util = require("./util");
-var Node = require("./Node");
+const Node = require("./Node");
 
 /**
  * Represents the inexor root tree

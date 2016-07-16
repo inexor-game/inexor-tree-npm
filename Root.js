@@ -177,6 +177,11 @@ function createTree(server) {
             server.log.debug('inexor.tree.grpc.synchronize.status: ' + status);
         });
         
+        root.grpc.synchronize.on('error', function(err) {
+			// can't start / bind
+			server.log.error(err);
+		});
+        
         root.grpc.initializeTree();
 
     };

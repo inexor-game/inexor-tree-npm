@@ -5,5 +5,7 @@ Detailed information about the project can be obtained [here](https://github.com
 
 ## TODO
 
-- Add introduction
-- Add examples
+- [] Add documentation
+- [] Add unit tests
+- [] Add introduction
+- [] Add examples

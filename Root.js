@@ -15,7 +15,7 @@ class Root extends Node {
         // Initialise this as the root node
         super(null, '', 'node');
     }
-    
+
     /**
      * @function
      * @name Root.findNode
@@ -28,11 +28,11 @@ class Root extends Node {
         for (let i = 1; i < splittedPath.length; i++) {
             node = node.getChild(splittedPath[i]);
         }
-        
+
         return node;
         // TODO: Use a binary-tree-search-approach?
     }
-    
+
     /**
      * @function
      * @name Root.createRecursive
@@ -60,7 +60,7 @@ class Root extends Node {
         }
         return node;
     }
-    
+
     /**
      * Returns the path of the field by proto key.
      * @function
@@ -106,13 +106,14 @@ class Root extends Node {
  * @name createServer
  * @param server
  * @param grpc
+ * @emit ready
  * @returns {Root}
  */
 function createTree(server) {
     let root = new Root();
-    
+
     root.grpc = {};
-    
+
     // Load the proto definition
     root.grpc.protoDescriptor = grpc.load(__dirname + '/../../../inexor/rpc/treedata.gen.proto');
 
@@ -176,18 +177,16 @@ function createTree(server) {
             // process status
             server.log.debug('inexor.tree.grpc.synchronize.status: ' + status);
         });
-        
+
         root.grpc.synchronize.on('error', function(err) {
 			// can't start / bind
 			server.log.error(err);
 		});
-        
         root.grpc.initializeTree();
-
+        root.emit('ready');
     };
-    
-    root.grpc.connect();
-    
+
+    // root.grpc.connect();
     return root;
 }
 
